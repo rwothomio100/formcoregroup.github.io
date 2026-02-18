@@ -579,7 +579,7 @@
             margin-top: 15px;
         }
 
-        /* ---------- CONTACT (fully visible) ---------- */
+        /* ---------- CONTACT (fully visible) - reused for top and bottom ---------- */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -617,6 +617,13 @@
             background: #d4edda;
             color: #155724;
             display: block;
+        }
+
+        /* quick contact section styling */
+        .quick-contact {
+            background: var(--light);
+            padding: 60px 0;
+            margin: 40px 0;
         }
 
         /* ---------- FOOTER ---------- */
@@ -683,7 +690,7 @@
     </header>
 
     <main id="main-content">
-        <!-- HOME PAGE -->
+        <!-- HOME PAGE (now with contact form near top and bottom) -->
         <section id="home" class="page active-page">
             <div class="hero">
                 <div class="container hero-content">
@@ -691,6 +698,51 @@
                     <h1>Integrated Architecture ·<br>Drafting · Construction · Consultancy</h1>
                     <p>We deliver comprehensive solutions across the entire building lifecycle — from initial design and detailed drafting to construction management and strategic consultancy.</p>
                     <a href="#" class="btn btn-primary" onclick="showPage('services')">Explore Our Capabilities</a>
+                </div>
+            </div>
+
+            <!-- CONTACT FORM - NEAR TOP (after hero) -->
+            <div class="quick-contact">
+                <div class="container">
+                    <h2 class="section-title">Start Your Project</h2>
+                    <p style="margin-bottom: 30px;">Reach out now for a consultation. We typically respond within 24 hours.</p>
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <p><i class="las la-map-marker" aria-hidden="true"></i> Twese plaza 2nd Floor Room F6, Wilson street KAMPALA</p>
+                            <p><i class="las la-phone" aria-hidden="true"></i> +256 775 638 004</p>
+                            <p><i class="las la-envelope" aria-hidden="true"></i> rwothomio100@gmail.com</p>
+                            <p><strong>Integrated services:</strong> From design to construction, we're your partner.</p>
+                        </div>
+                        <div>
+                            <form id="quickContactForm" action="https://formsubmit.co/rwothomio100@gmail.com" method="POST">
+                                <input type="hidden" name="_next" value="https://formcore.group/thanks.html">
+                                <input type="hidden" name="_captcha" value="true">
+                                <input type="hidden" name="_template" value="box">
+                                
+                                <div class="form-group">
+                                    <input type="text" name="name" placeholder="Your Name / Company" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <select name="service_interest">
+                                        <option value="">-- I'm interested in --</option>
+                                        <option>Architectural Design</option>
+                                        <option>Drafting Services</option>
+                                        <option>Construction Management</option>
+                                        <option>Consultancy</option>
+                                        <option>Full Service (All)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="message" rows="4" placeholder="Tell us about your project..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                <div class="form-message" id="quickFormMessage"></div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -856,6 +908,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- CONTACT FORM - BOTTOM OF HOMEPAGE -->
+            <div class="quick-contact" style="margin-bottom: 0;">
+                <div class="container">
+                    <h2 class="section-title">Ready to Build?</h2>
+                    <p style="margin-bottom: 30px;">Let's discuss your project. Fill out the form and we'll get back to you promptly.</p>
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <p><i class="las la-map-marker" aria-hidden="true"></i> Twese plaza 2nd Floor Room F6, Wilson street KAMPALA</p>
+                            <p><i class="las la-phone" aria-hidden="true"></i> +256 775 638 004</p>
+                            <p><i class="las la-envelope" aria-hidden="true"></i> rwothomio100@gmail.com</p>
+                            <p><strong>Integrated services:</strong> From design to construction, we're your partner.</p>
+                        </div>
+                        <div>
+                            <form id="bottomContactForm" action="https://formsubmit.co/rwothomio100@gmail.com" method="POST">
+                                <input type="hidden" name="_next" value="https://formcore.group/thanks.html">
+                                <input type="hidden" name="_captcha" value="true">
+                                <input type="hidden" name="_template" value="box">
+                                
+                                <div class="form-group">
+                                    <input type="text" name="name" placeholder="Your Name / Company" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <select name="service_interest">
+                                        <option value="">-- I'm interested in --</option>
+                                        <option>Architectural Design</option>
+                                        <option>Drafting Services</option>
+                                        <option>Construction Management</option>
+                                        <option>Consultancy</option>
+                                        <option>Full Service (All)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="message" rows="4" placeholder="Tell us about your project..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                <div class="form-message" id="bottomFormMessage"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- ABOUT PAGE -->
@@ -1001,7 +1098,7 @@
             </div>
         </section>
 
-        <!-- CONTACT PAGE (visible on mobile) -->
+        <!-- CONTACT PAGE (still available) -->
         <section id="contact" class="page" style="display:none;">
             <div class="container" style="padding: 60px 5%;">
                 <h2 class="section-title">Get in Touch</h2>
@@ -1145,9 +1242,24 @@
 
         window.onclick = e => { if(e.target === document.getElementById('projectModal')) closeProjectModal(); };
 
+        // handle form submissions (simple simulation)
+        document.getElementById('quickContactForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('quickFormMessage').className = 'form-message success';
+            document.getElementById('quickFormMessage').textContent = 'Message sent! We\'ll respond shortly.';
+            this.reset();
+        });
+        document.getElementById('bottomContactForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('bottomFormMessage').className = 'form-message success';
+            document.getElementById('bottomFormMessage').textContent = 'Message sent! We\'ll respond shortly.';
+            this.reset();
+        });
         document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
             document.getElementById('formMessage').className = 'form-message success';
-            document.getElementById('formMessage').textContent = 'Sending...';
+            document.getElementById('formMessage').textContent = 'Message sent! We\'ll respond shortly.';
+            this.reset();
         });
 
         window.onload = () => showPage('home');
