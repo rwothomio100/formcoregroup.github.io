@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
     <!-- PRIMARY META TAGS -->
     <title>FormCore Group | Architecture, Drafting, Construction & Consultancy</title>
@@ -149,7 +149,7 @@
             color: var(--secondary);
         }
 
-        /* ---------- HEADER / NAV with NEW LOGO ---------- */
+        /* ---------- HEADER / NAV with NEW LOGO & MOBILE BUTTON ---------- */
         header {
             position: sticky;
             top: 0;
@@ -195,11 +195,13 @@
             text-transform: uppercase;
             margin-top: 2px;
         }
-        nav {
+
+        /* desktop nav */
+        .desktop-nav {
             display: flex;
             gap: 30px;
         }
-        nav a {
+        .desktop-nav a {
             text-decoration: none;
             color: var(--primary);
             font-weight: 500;
@@ -207,18 +209,69 @@
             font-size: 1rem;
             letter-spacing: 0.3px;
         }
-        nav a:hover, nav a.active {
+        .desktop-nav a:hover, .desktop-nav a.active {
             color: var(--secondary);
         }
 
-        /* Optional building icon as pseudo-element or svg */
-        .logo-icon {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            margin-right: 8px;
-            background: linear-gradient(145deg, var(--secondary), var(--accent));
-            clip-path: polygon(20% 0%, 80% 0%, 100% 30%, 100% 100%, 0% 100%, 0% 30%);
+        /* mobile nav button & drawer */
+        .mobile-nav-btn {
+            display: none;
+            background: none;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        .mobile-nav-btn i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+        .mobile-nav-btn:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+        .mobile-nav-btn:hover i {
+            color: var(--primary);
+        }
+
+        .mobile-drawer {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            padding: 20px 5%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            flex-direction: column;
+            gap: 15px;
+            z-index: 99;
+            border-top: 2px solid var(--secondary);
+        }
+        .mobile-drawer a {
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .mobile-drawer a:last-child {
+            border-bottom: none;
+        }
+        .mobile-drawer a.active {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav { display: none; }
+            .mobile-nav-btn { display: flex; }
         }
 
         /* ---------- HERO with tagline integration ---------- */
@@ -522,7 +575,7 @@
             margin-top: 15px;
         }
 
-        /* ---------- CONTACT ---------- */
+        /* ---------- CONTACT (fully visible) ---------- */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -545,6 +598,7 @@
             padding: 15px;
             border: 1px solid #ddd;
             font-family: var(--font-main);
+            font-size: 1rem;
         }
         input:focus, textarea:focus, select:focus {
             outline: 2px solid var(--secondary);
@@ -584,8 +638,8 @@
             margin-top: 5px;
         }
 
+        /* ensure contact page visible on mobile */
         @media (max-width: 768px) {
-            nav { display: none; }
             .hero-content h1 { font-size: 2.5rem; }
             .contact-grid { grid-template-columns: 1fr; }
         }
@@ -601,13 +655,26 @@
                 </div>
                 <div class="logo-tagline">Shaping Stronger Spaces. Creating Lasting Quality</div>
             </div>
-            <nav aria-label="Main navigation">
+            <!-- desktop navigation -->
+            <nav class="desktop-nav" aria-label="Main navigation">
                 <a href="#home" class="active" onclick="showPage('home')">Home</a>
                 <a href="#about" onclick="showPage('about')">About</a>
                 <a href="#services" onclick="showPage('services')">Services</a>
                 <a href="#projects" onclick="showPage('projects')">Projects</a>
                 <a href="#contact" onclick="showPage('contact')">Contact</a>
             </nav>
+            <!-- mobile navigation button -->
+            <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Menu" aria-expanded="false">
+                <i class="las la-bars"></i> <span>Menu</span>
+            </button>
+        </div>
+        <!-- mobile drawer (hidden by default) -->
+        <div class="mobile-drawer" id="mobileDrawer">
+            <a href="#home" onclick="showPage('home'); toggleMobileDrawer()">Home</a>
+            <a href="#about" onclick="showPage('about'); toggleMobileDrawer()">About</a>
+            <a href="#services" onclick="showPage('services'); toggleMobileDrawer()">Services</a>
+            <a href="#projects" onclick="showPage('projects'); toggleMobileDrawer()">Projects</a>
+            <a href="#contact" onclick="showPage('contact'); toggleMobileDrawer()">Contact</a>
         </div>
     </header>
 
@@ -930,15 +997,13 @@
             </div>
         </section>
 
-        <!-- CONTACT PAGE -->
+        <!-- CONTACT PAGE (visible on mobile) -->
         <section id="contact" class="page" style="display:none;">
             <div class="container" style="padding: 60px 5%;">
                 <h2 class="section-title">Get in Touch</h2>
                 <div class="contact-grid">
                     <div class="contact-info">
-                        <p><i class="las la-map-marker" aria-hidden="true"></i> Twese plaza 2nd Floor Room F6,
- Wilson street KAMPALA
-</p>
+                        <p><i class="las la-map-marker" aria-hidden="true"></i> Twese plaza 2nd Floor Room F6, Wilson street KAMPALA</p>
                         <p><i class="las la-phone" aria-hidden="true"></i> +256 775 638 004</p>
                         <p><i class="las la-envelope" aria-hidden="true"></i> rwothomio100@gmail.com</p>
                         <p><strong>Integrated services:</strong> From design to construction, we're your partner.</p>
@@ -1012,14 +1077,40 @@
     </footer>
 
     <script>
+        // mobile drawer toggle
+        const mobileBtn = document.getElementById('mobileNavBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+
+        function toggleMobileDrawer() {
+            if (mobileDrawer.style.display === 'flex') {
+                mobileDrawer.style.display = 'none';
+                mobileBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                mobileDrawer.style.display = 'flex';
+                mobileBtn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        mobileBtn.addEventListener('click', toggleMobileDrawer);
+
+        // page navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.getElementById(pageId).style.display = 'block';
-            document.querySelectorAll('nav a').forEach(link => {
+            
+            // update active class on desktop nav
+            document.querySelectorAll('.desktop-nav a').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('onclick').includes(pageId)) link.classList.add('active');
+            });
+            // update active class on mobile drawer links
+            document.querySelectorAll('.mobile-drawer a').forEach(link => {
                 link.classList.remove('active');
                 if(link.getAttribute('onclick').includes(pageId)) link.classList.add('active');
             });
         }
+
+        // close drawer when a link is clicked (already handled by onclick)
 
         const projectData = {
             1: { title: 'Hillside Residence', description: 'Full-service design and construction of a modern villa. Scope: architectural design, working drawings, construction supervision.', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'] },
@@ -1053,5 +1144,4 @@
         window.onload = () => showPage('home');
     </script>
 </body>
-
 </html>
